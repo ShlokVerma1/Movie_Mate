@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Discover Movies - Movie Database{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>
+        <i class="fas fa-compass text-info me-2"></i>
+        Discover Movies by Genre
+    </h2>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-filter me-2"></i>Choose a Genre
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if genres %}
+                <div class="genre-buttons">
+                    {% for genre in genres %}
+                    <a href="{{ url_for('main.discover', genre=genre.id) }}" 
+                       class="btn btn-outline-primary btn-sm me-2 mb-2 {% if selected_genre == genre.id|string %}active{% endif %}">
+                        {{ genre.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">Unable to load genres at this time.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if selected_genre and genre_movies %}
+<div class="selected-genre-section">
+    {% set genre_name = genres|selectattr('id', 'equalto', selected_genre|int)|first %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>
+            <i class="fas fa-tag me-2"></i>
+            {{ genre_name.name if genre_name else 'Selected Genre' }} Movies
+        </h4>
+        <span class="badge bg-info">{{ genre_movies.total_results if genre_movies else 0 }} movies</span>
+    </div>
+    
+    {% if genre_movies.results %}
+    <div class="row">
+        {% for movie in genre_movies.results %}
+        <div class="col-md-4 col-lg-3 mb-4">
+            {% include 'components/movie_card.html' %}
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Load More Button -->
+    {% if genre_movies.page < genre_movies.total_pages %}
+    <div class="text-center mt-4">
+        <a href="{{ url_for('main.discover', genre=selected_genre, page=genre_movies.page + 1) }}" 
+           class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>Load More Movies
+        </a>
+    </div>
+    {% endif %}
+    
+    {% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+        <h5 class="text-muted">No movies found for this genre</h5>
+        <p class="text-muted">Try selecting a different genre</p>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if not selected_genre %}
+<div class="popular-genres-section mt-4">
+    <h4 class="mb-3">
+        <i class="fas fa-fire me-2"></i>Popular Genres
+    </h4>
+    <div class="row">
+        {% if genres %}
+        {% for genre in genres[:8] %}
+        <div class="col-md-3 mb-3">
+            <div class="card h-100 genre-card">
+                <div class="card-body text-center">
+                    <div class="genre-icon mb-3">
+                        {% if genre.name == 'Action' %}
+                        <i class="fas fa-fist-raised fa-2x text-danger"></i>
+                        {% elif genre.name == 'Comedy' %}
+                        <i class="fas fa-laugh fa-2x text-warning"></i>
+                        {% elif genre.name == 'Drama' %}
+                        <i class="fas fa-theater-masks fa-2x text-info"></i>
+                        {% elif genre.name == 'Horror' %}
+                        <i class="fas fa-ghost fa-2x text-dark"></i>
+                        {% elif genre.name == 'Romance' %}
+                        <i class="fas fa-heart fa-2x text-danger"></i>
+                        {% elif genre.name == 'Thriller' %}
+                        <i class="fas fa-bolt fa-2x text-warning"></i>
+                        {% elif genre.name == 'Science Fiction' %}
+                        <i class="fas fa-rocket fa-2x text-primary"></i>
+                        {% elif genre.name == 'Fantasy' %}
+                        <i class="fas fa-magic fa-2x text-purple"></i>
+                        {% else %}
+                        <i class="fas fa-film fa-2x text-primary"></i>
+                        {% endif %}
+                    </div>
+                    <h6 class="card-title">{{ genre.name }}</h6>
+                    <a href="{{ url_for('main.discover', genre=genre.id) }}" 
+                       class="btn btn-outline-primary btn-sm">
+                        Explore
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<div class="text-center mt-4">
+    <a href="{{ url_for('main.browse') }}" class="btn btn-secondary">
+        <i class="fas fa-th me-1"></i>Browse All Movies
+    </a>
+</div>
+{% endblock %}

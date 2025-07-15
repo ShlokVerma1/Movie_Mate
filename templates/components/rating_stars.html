@@ -1,0 +1,9 @@
+<div class="rating d-inline-flex align-items-center">
+    {% for i in range(5) %}
+        {% if i < (movie.vote_average / 2)|int %}
+        <i class="fas fa-star text-warning"></i>
+        {% else %}
+        <i class="far fa-star text-muted"></i>
+        {% endif %}
+    {% endfor %}
+</div>

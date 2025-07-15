@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Recommendations - Movie Database{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>
+        <i class="fas fa-lightbulb text-warning me-2"></i>
+        Recommended for You
+    </h2>
+</div>
+
+<div class="alert alert-info" role="alert">
+    <i class="fas fa-info-circle me-2"></i>
+    These recommendations are based on movies in your watchlist and similar preferences.
+</div>
+
+{% if recommendations %}
+<div class="row">
+    {% for movie in recommendations %}
+    <div class="col-md-4 col-lg-3 mb-4">
+        {% include 'components/movie_card.html' %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="fas fa-lightbulb fa-4x text-muted mb-4"></i>
+    <h3 class="text-muted mb-3">No recommendations available</h3>
+    <p class="text-muted mb-4">Add more movies to your watchlist to get personalized recommendations</p>
+    <a href="{{ url_for('main.search') }}" class="btn btn-primary">
+        <i class="fas fa-search me-1"></i>Search Movies
+    </a>
+</div>
+{% endif %}
+{% endblock %}
