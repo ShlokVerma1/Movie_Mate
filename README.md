@@ -1,4 +1,4 @@
-"""# Movie_Mate: High-Performance Content Discovery & Aggregation Engine
+Movie_Mate: High-Performance Content Discovery & Aggregation Engine
 
 ## 1. Business Objective
 In the highly competitive streaming and media aggregation sector, user retention hinges on immediate, hyper-relevant content discovery. Legacy matching systems frequently suffer from high-latency data retrieval and rigid querying, resulting in user choice fatigue and elevated bounce rates. 
