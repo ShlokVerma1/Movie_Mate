@@ -1,4 +1,4 @@
-Movie_Mate: High-Performance Content Discovery & Aggregation Engine
+# Movie_Mate: High-Performance Content Discovery & Aggregation Engine
 
 ## 1. Business Objective
 In the highly competitive streaming and media aggregation sector, user retention hinges on immediate, hyper-relevant content discovery. Legacy matching systems frequently suffer from high-latency data retrieval and rigid querying, resulting in user choice fatigue and elevated bounce rates. 
@@ -21,3 +21,23 @@ The system operates as a stateless, lightweight backend designed for rapid I/O h
 
 ## 4. Deployment & Installation
 Engineered for rapid integration into standard CI/CD pipelines and containerized (Docker) environments.
+```bash
+# 1. Clone the repository
+git clone [https://github.com/ShlokVerma1/Movie_Mate.git](https://github.com/ShlokVerma1/Movie_Mate.git)
+cd Movie_Mate
+
+# 2. Establish an isolated runtime environment
+python3 -m venv venv
+source venv/bin/activate
+
+# 3. Install pinned dependencies
+pip install -r requirements.txt
+
+# 4. Environment Configuration
+# Define necessary variables in a secure .env file:
+# TMDB_API_KEY=<your_key>
+# FLASK_APP=main.py
+# FLASK_ENV=production
+
+# 5. Production Execution (WSGI)
+gunicorn -w 4 -b 0.0.0.0:8000 main:app
